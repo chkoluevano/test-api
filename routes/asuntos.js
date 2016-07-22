@@ -47,9 +47,22 @@ module.exports=function(app){
  		console.log(req.body);
 
  		var asunto = new Asunto({
+ 			folio: req.body.folio,
  			descripcion: req.body.descripcion,
- 			fecha: req.body.fecha,
-		    activo :  true		    
+ 			direccion_reporte: {
+		  		calle: req.body.calle,
+				colonia: req.body.colonia,
+				numero: req.body.numero,
+				cp: req.body.cp
+		  	},
+		  	geolocalizacion:{
+			  	lat: req.body.lat,
+			  	long: req.body.long,
+			},
+		  	imagenes:[],
+		  	fecha: req.body.fecha,
+ 			fecha_modif: req.body.fecha_modif,
+ 			activo :  true	
     	});
 
     	asunto.save(function(err){

@@ -16,8 +16,11 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({'extended':'true'}));            
 app.use(methodOverride());
 
+
 // conexion
-mongoose.connect('mongodb://localhost:27017/mono-testing',function(err, res){
+//'mongodb://localhost:27017/mono-testing',function(err, res){
+
+mongoose.connect('mongodb://usrpruebas:pwdatencion@ds023475.mlab.com:23475/atencion_ciudadana_mongo',function(err, res){
     if (!err){
         console.log("conexion ok")
     }

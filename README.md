@@ -23,7 +23,6 @@ app.delete('/nombremodelo/:id', deleteNombreModelo);
   fecha_alta: '2016/10/10',
   fecha_modif: '2016/10/10',
   descripcion: 'descripcion',
-  fecha_mod: '2016/10/10',
   activo:true,
   status : {
     nombre : "iniciado",
