@@ -4,7 +4,6 @@ Schema = mongoose.Schema
 
 var Asunto = new Schema({
   descripcion:  String,
-  //asunto_id : {type: Number, unique: true },
   folio: String,
   direccion_reporte: {
   	calle: String,

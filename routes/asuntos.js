@@ -24,7 +24,8 @@ module.exports=function(app){
 	findById = function(req, res){
 		console.log('GET - /asuntos/:id');
 		console.log('find ' + req.params.id);
-		return Asunto.findById(req.params.id, function(err, asunto){
+			// Busca por folio
+			return Asunto.findById(req.params.id, function(err, asunto){
 			if (!asunto){
 				res.statusCode = 404;
 				return res.send({ error: 'Not found' });
@@ -44,7 +45,6 @@ module.exports=function(app){
 
  	addAsunto = function(req, res){
  		console.log('POST - /asunto');
- 		console.log(req.body);
 
  		var asunto = new Asunto({
  			folio: req.body.folio,
@@ -57,7 +57,7 @@ module.exports=function(app){
 		  	},
 		  	geolocalizacion:{
 			  	lat: req.body.lat,
-			  	long: req.body.long,
+			  	long: req.body.long
 			},
 		  	imagenes:[],
 		  	fecha: req.body.fecha,
@@ -88,16 +88,22 @@ module.exports=function(app){
         		return res.send({ error: 'Not found' });
  			}
  			asunto.descripcion = req.body.descripcion;
- 			asunto.activo = req.body.activo;
- 			return asunto.save(function(){
- 				if(!err){
- 					return res.send({status:'ok',asunto:asunto});
- 				}
- 				else{
- 					res.statusCode = 500;
-            		res.send({ error: 'Server error' });
- 				}
- 			});
+			asunto.direccion_reporte.cp = req.body.cp;
+			asunto.direccion_reporte.calle = req.body.calle;
+			asunto.direccion_reporte.colonia = req.body.colonia;
+			asunto.direccion_reporte.numero = req.body.numero;
+			asunto.status.status_nombre = req.body.status_nombre;
+			if (!err) {
+	 			return asunto.save(function(err){
+	 				if(!err){
+	 					return res.send({status:'ok',asunto:asunto});
+	 				}
+	 				else{
+	 					res.statusCode = 500;
+	            		res.send({ error: 'Server error' });
+	 				}
+	 			});
+	 		}
 
  		});
 
