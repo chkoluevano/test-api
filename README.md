@@ -16,7 +16,6 @@ app.delete('/nombremodelo/:id', deleteNombreModelo);
 {
   _id: '1',
   folio : "12345",
-  evento_id:1,
   usuario_id:1,
   ciudadano_id:1,
   peticion_id:1,

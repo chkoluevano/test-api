@@ -59,6 +59,7 @@ module.exports=function(app){
 			  	lat: req.body.lat,
 			  	long: req.body.long
 			},
+			origen : req.body.origen,
 		  	imagenes:[],
 		  	fecha: req.body.fecha,
  			fecha_modif: req.body.fecha_modif,

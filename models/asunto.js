@@ -1,8 +1,12 @@
 var mongoose = require('mongoose');
 Schema = mongoose.Schema
 
+/* Model relationship */
+//var Origen = require('../models/asunto.js');
+
 
 var Asunto = new Schema({
+  //_origen : { type: Number, ref: 'Origen' },
   descripcion:  String,
   folio: String,
   direccion_reporte: {
@@ -11,10 +15,12 @@ var Asunto = new Schema({
   	numero: String,
   	cp: Number
   },
+  
   geolocalizacion:{
   	lat: String,
   	long: String
   },
+  origen: String,
   respuestas:[{
   	resp_respuesta: String,
   	resp_fecha: Date,
