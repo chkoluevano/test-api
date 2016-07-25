@@ -1,33 +1,25 @@
 module.exports=function(app){
 
-	// Asuntos model //
 	var Asunto = require('../models/asunto.js');
+	var Origen = require('../models/origen.js');
 
-	/*
-	findPrueba  = function(req,res){
-		console.log("pruebas")
-			return Asunto.findOne({descripcion:"RELA"}).populate('_origen').exec(function (err, origen) {
-				if (err) return handleError(err);
-				  console.log('el asunto es %s', origen._origen.nombre);
-				});
-	};
-	*/
 
 	// All Routes functions
 	findAllAsuntos = function(req, res){
 		//console.log(Nuevo._id);
 		console.log('GET - /asuntos');
-		 return Asunto.find(function(err, asuntos) {
-            if (!err){
-                res.send(asuntos)
-            }
-            else{
-            	res.statusCode = 500;
-  				console.log('Internal error(%d): %s',res.statusCode,err.message);
-  				return res.send({ error: 'Error asunto' });
+		 return Asunto.find({},function(err, asuntos){
+		 	Origen.populate(asuntos, {path: "_origen"},function(err, asuntos){
+	            if (!err){
+	                res.send(asuntos)
+	            }
+	            else{
+	            	res.statusCode = 500;
+	  				console.log('Internal error(%d): %s',res.statusCode,err.message);
+	  				return res.send({ error: 'Error asunto' });
 
-            }
-           
+	            }
+           });
         });
 	};
 
