@@ -3,9 +3,19 @@ module.exports=function(app){
 	// Asuntos model //
 	var Asunto = require('../models/asunto.js');
 
+	/*
+	findPrueba  = function(req,res){
+		console.log("pruebas")
+			return Asunto.findOne({descripcion:"RELA"}).populate('_origen').exec(function (err, origen) {
+				if (err) return handleError(err);
+				  console.log('el asunto es %s', origen._origen.nombre);
+				});
+	};
+	*/
 
 	// All Routes functions
 	findAllAsuntos = function(req, res){
+		//console.log(Nuevo._id);
 		console.log('GET - /asuntos');
 		 return Asunto.find(function(err, asuntos) {
             if (!err){
@@ -46,7 +56,10 @@ module.exports=function(app){
  	addAsunto = function(req, res){
  		console.log('POST - /asunto');
 
+ 		/*
+ 		*/ 
  		var asunto = new Asunto({
+ 			_origen: req.body.origen,
  			folio: req.body.folio,
  			descripcion: req.body.descripcion,
  			direccion_reporte: {
@@ -74,6 +87,7 @@ module.exports=function(app){
     		else{
     			res.statusCode = 500;
   				console.log('Internal error(%d): %s',res.statusCode,err.message);
+  				console.log(err.message)
   				return res.send({ error: 'Error asunto' });
     		}
     	});
@@ -130,7 +144,30 @@ module.exports=function(app){
  		});
 	};
 
+	/* Custom search */
 
+	findByStatus = function (req, res){
+		console.log('GET - /asunto/nombre/:status')
+		return Asunto.find({'status.status_nombre': 'capturado' }, function (err, asunto) {
+  			if (!asunto){
+				res.statusCode = 404;
+				return res.send({ error: 'Not found' });
+			}
+  			if (!err) {
+  				return res.send({ status: 'OK', asunto:asunto });
+  			}
+  			else{
+					res.statusCode = 500;
+            		res.send({ error: 'Server error' });  			}
+
+		});
+	};
+
+
+
+	// FindByToday - and - Range
+	// FindBy
+  app.get('/asuntos/status', findByStatus);
   app.get('/asuntos', findAllAsuntos);
   app.get('/asunto/:id', findById);
   app.post('/asunto', addAsunto);

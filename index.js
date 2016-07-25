@@ -40,7 +40,9 @@ app.listen(8080, function(e){
  console.log("escuchando puerto 8080");
 });
 
-routes = require('./routes/asuntos')(app);
+
+routesAsuntos = require('./routes/asuntos')(app);
+routesOrigenes = require('./routes/origen')(app);
 
 
 

@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 Schema = mongoose.Schema
 
 /* Model relationship */
-//var Origen = require('../models/asunto.js');
+var Origen = require('../models/origen.js');
 
 
 var Asunto = new Schema({
-  //_origen : { type: Number, ref: 'Origen' },
+  _origen : { type: Schema.Types.ObjectId, ref: 'Origen' },
   descripcion:  String,
   folio: String,
   direccion_reporte: {
