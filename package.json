@@ -7,11 +7,12 @@
     "test": "testing"
   },
   "dependencies": {
-        "express": "latest",
-        "mongoose": "latest",
-	"body-parser": "^1.13.3",
-	"method-override": "^2.1.3"
-    },
+    "body-parser": "^1.13.3",
+    "express": "latest",
+    "method-override": "^2.1.3",
+    "mongoose": "latest",
+    "multer": "^1.1.0"
+  },
   "author": "chko",
   "license": "ISC"
 }

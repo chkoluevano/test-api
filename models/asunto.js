@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 Schema = mongoose.Schema
 
 /* Model relationship */
-var Origen = require('../models/origen.js');
+var Peticion = require('../models/peticion.js');
 
 
 var Asunto = new Schema({
-  _origen : { type: Schema.Types.ObjectId, ref: 'Origen' },
+  _peticion : { type: Schema.Types.ObjectId, ref: 'Peticion' },
   descripcion:  String,
   folio: String,
   direccion_reporte: {
@@ -22,9 +22,11 @@ var Asunto = new Schema({
   },
   origen: String,
   respuestas:[{
-  	resp_respuesta: String,
+  	respuesta: String,
   	resp_fecha: Date,
   	resp_activo: Boolean
+    //_usuario : { type: Schema.Types.ObjectId, ref: 'Usuario' },
+
   }],
 
   imagenes:[{
@@ -37,7 +39,7 @@ var Asunto = new Schema({
     status_nombre : { type: String, default: "iniciado" },
     status_fecha_modif : {type :Date, default: Date.now },
   },
-
+  origen:  { type: String},
   fecha:  { type: Date, default: Date.now },
   fecha_modif: {type :Date, default: Date.now },
   activo: { type: Boolean, default: true }    

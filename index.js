@@ -5,15 +5,8 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override')
 
 // configuracion
-/*
-app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json());                                     
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
-app.use(bodyParser.urlencoded({'extended':'true'}));            
-
-*/
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
-app.use(bodyParser.urlencoded({'extended':'true'}));            
+app.use(bodyParser.urlencoded({'extended':'true'}));   
 app.use(methodOverride());
 
 
@@ -42,7 +35,6 @@ app.listen(8080, function(e){
 
 
 routesAsuntos = require('./routes/asuntos')(app);
-routesOrigenes = require('./routes/origen')(app);
-
+routesPeticiones = require('./routes/peticiones')(app);
 
 

@@ -1,45 +1,71 @@
+var multer  =   require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+
+var upload = multer({ storage : storage}).single('userPhoto');
+
+
+
 module.exports=function(app){
-
 	var Asunto = require('../models/asunto.js');
-	var Origen = require('../models/origen.js');
+	var Peticion = require('../models/peticion.js');
 
+	/* Metodo para la APP */
+	photosUpload = function(req, res){
+    	upload(req,res,function(err) {
+        	if(err) {
+            	return res.end(err.message);
+        	}
+        		res.statusCode = 500;
+  				console.log('Internal error(%d): %s',res.statusCode,err.message);
+  				return res.send({ error: 'Error asunto' });
+    	});
+	};
+	
 
 	// All Routes functions
 	findAllAsuntos = function(req, res){
-		//console.log(Nuevo._id);
 		console.log('GET - /asuntos');
-		 return Asunto.find({},function(err, asuntos){
-		 	Origen.populate(asuntos, {path: "_origen"},function(err, asuntos){
-	            if (!err){
-	                res.send(asuntos)
-	            }
-	            else{
-	            	res.statusCode = 500;
-	  				console.log('Internal error(%d): %s',res.statusCode,err.message);
-	  				return res.send({ error: 'Error asunto' });
-
-	            }
-           });
+		 return Asunto.find(function(err, asuntos) {
+		 	Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
+        		    if (!err){
+        		    	console.log(asuntos);
+                		res.status(200).send(asuntos);
+            		}
+            		else{
+            			res.statusCode = 500;
+  						console.log('Internal error(%d): %s',res.statusCode,err.message);
+  						return res.send({ error: 'Error asunto' });
+  					}
+        		    
+        		}); 
         });
 	};
 
 	findById = function(req, res){
 		console.log('GET - /asuntos/:id');
-		console.log('find ' + req.params.id);
 			// Busca por folio
-			return Asunto.findById(req.params.id, function(err, asunto){
-			if (!asunto){
-				res.statusCode = 404;
-				return res.send({ error: 'Not found' });
-			}
-			if (!err){
-				return res.send({ status: 'OK', asunto:asunto });
-			}
-			else{
-				res.statusCode = 500;
-  				console.log('Internal error(%d): %s',res.statusCode,err.message);
-  				return res.send({ error: 'Error asunto' });
-			}
+			return Asunto.findById(req.params.id, function(err, asuntos){
+				Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
+					if (!asuntos){
+						res.statusCode = 404;
+						return res.send({ error: 'Not found' });
+					}
+					if (!err){
+						return res.send({ status: 'OK', asunto:asuntos});
+					}
+					else{
+						res.statusCode = 500;
+		  				console.log('Internal error(%d): %s',res.statusCode,err.message);
+		  				return res.send({ error: 'Error asunto' });
+					}
+				});
 		});
 
 
@@ -51,7 +77,6 @@ module.exports=function(app){
  		/*
  		*/ 
  		var asunto = new Asunto({
- 			_origen: req.body.origen,
  			folio: req.body.folio,
  			descripcion: req.body.descripcion,
  			direccion_reporte: {
@@ -68,7 +93,8 @@ module.exports=function(app){
 		  	imagenes:[],
 		  	fecha: req.body.fecha,
  			fecha_modif: req.body.fecha_modif,
- 			activo :  true	
+ 			activo :  true,
+ 			_peticion : req.body.peticion
     	});
 
     	asunto.save(function(err){
@@ -94,12 +120,14 @@ module.exports=function(app){
  				res.statusCode = 404;
         		return res.send({ error: 'Not found' });
  			}
+ 			asunto.origen = req.body.origen;
  			asunto.descripcion = req.body.descripcion;
 			asunto.direccion_reporte.cp = req.body.cp;
 			asunto.direccion_reporte.calle = req.body.calle;
 			asunto.direccion_reporte.colonia = req.body.colonia;
 			asunto.direccion_reporte.numero = req.body.numero;
 			asunto.status.status_nombre = req.body.status_nombre;
+			asunto._peticion= req.body.peticion;
 			if (!err) {
 	 			return asunto.save(function(err){
 	 				if(!err){
@@ -136,30 +164,107 @@ module.exports=function(app){
  		});
 	};
 
-	/* Custom search */
+	/* Custom search
+	ByStatus
+	 */
 
 	findByStatus = function (req, res){
-		console.log('GET - /asunto/nombre/:status')
-		return Asunto.find({'status.status_nombre': 'capturado' }, function (err, asunto) {
-  			if (!asunto){
-				res.statusCode = 404;
-				return res.send({ error: 'Not found' });
-			}
-  			if (!err) {
-  				return res.send({ status: 'OK', asunto:asunto });
-  			}
-  			else{
-					res.statusCode = 500;
-            		res.send({ error: 'Server error' });  			}
-
+		console.log('GET - /asunto/status/:status')
+		return Asunto.find({'status.status_nombre': req.params.nombre }, function (err, asuntos) {
+			Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
+	  			if (!asuntos){
+					res.statusCode = 404;
+					return res.send({ error: 'Not found' });
+				}
+	  			if (!err) {
+	  				return res.send({ status: 'OK', asunto:asuntos });
+	  			}
+	  			else{
+	  				res.statusCode = 500;
+	  				res.send({ error: 'Server error' });
+	  			}
+	  		});
 		});
 	};
 
 
 
-	// FindByToday - and - Range
-	// FindBy
-  app.get('/asuntos/status', findByStatus);
+
+
+
+	/* Custom search
+	ByToday
+	 */
+
+	findByToday = function (req, res){
+		console.log('GET - /asuntos/today/')
+		/* Today */
+		var today = new Date();
+		today.setHours(0,1,0,0);
+		today.setDate(today.getDate());
+		/* Today at Midnigth */
+		var todayAtMidnigth = new Date();
+		todayAtMidnigth.setHours(22,0,0,0);
+		todayAtMidnigth.setDate(todayAtMidnigth.getDate());
+
+		return Asunto.find({'fecha': {$gt: today, "$lt": todayAtMidnigth}}, function (err, asuntos) {
+			Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
+				if (!asuntos){
+					res.statusCode = 404;
+					return res.send({ error: 'Not found' });
+				}
+				if (!err) {
+					return res.send({ status: 'OK', asunto:asuntos });
+				}
+				else{
+					res.statusCode = 500;
+					res.send({ error: 'Server error' });}
+				});
+		});
+	};
+
+
+	 findTest = function(req, res){
+		Asunto.aggregate([
+        {
+            $group: {
+               	_id: '$_peticion',
+                count: {$sum: 1},
+                 "records":{$push:"$$ROOT"},
+				//totalPrice: { $sum:  "$peticion.dias" }
+
+            }
+        }
+	    ], function (err, result) {
+	        if (err) {
+	            next(err);
+	        } else {
+	            res.json(result);
+	        }
+	    });
+	}
+
+
+
+
+
+
+
+
+  /* Routes Reportes */
+  app.post('/photosUpload/:asunto', photosUpload);
+  app.get('/asuntos/today/', findByToday);
+  app.get('/asuntos/status/:nombre', findByStatus);
+  // Find By Date Range
+  // Find By Ciudadano : populate + find
+  // Find By Origen
+  // Find By Peticion
+  // Find By Folio
+  // Responder
+  // setStatus
+  // 
+  /* Routes Crud */
+  app.get('/asuntos/test', findTest);
   app.get('/asuntos', findAllAsuntos);
   app.get('/asunto/:id', findById);
   app.post('/asunto', addAsunto);
