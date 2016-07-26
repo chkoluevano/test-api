@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var config = require('../config.js').get(process.env.NODE_ENV);
 
 module.exports = function(callback) {
-    //'mongodb://localhost:27017/mono-testing',function(err, res){
-    mongoose.connect('mongodb://usrpruebas:pwdatencion@ds023475.mlab.com:23475/atencion_ciudadana_mongo', function(err, res) {
+	console.log(config.database)
+    mongoose.connect(config.database, function(err, res) {
         if (!err) {
             console.log(" *** CONECTADO ***")
         } else {
