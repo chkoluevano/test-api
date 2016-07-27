@@ -2,9 +2,12 @@ var express = require("express");
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var mongoConfig = require('./config/mongo')();
 
 // configuracion mongo
+var mongoConfig = require('./config/mongo')();
+
+
+// configuracion app
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ 'extended': 'true' }));
 app.use(methodOverride());

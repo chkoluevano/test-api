@@ -248,27 +248,59 @@ module.exports=function(app){
 
 
 
-
-
-
-  /* Routes Reportes */
+  /* A P P */
   app.post('/photosUpload/:asunto', photosUpload);
-  app.get('/asuntos/today/', findByToday);
-  app.get('/asuntos/status/:nombre', findByStatus);
-  // Find By Date Range
-  // Find By Ciudadano : populate + find
-  // Find By Origen
-  // Find By Peticion
-  // Find By Folio
-  // Responder
-  // setStatus
-  // 
-  /* Routes Crud */
-  app.get('/asuntos/test', findTest);
+
+
+
+  /* Basicas */
+  /*  A D M I N I S T R A D O R */
+  // _________________________________________
   app.get('/asuntos', findAllAsuntos);
   app.get('/asunto/:id', findById);
   app.post('/asunto', addAsunto);
   app.put('/asunto/:id', updateAsunto);
   app.delete('/asunto/:id', deleteAsunto);
+  app.get('/asuntos/today/', findByToday);
+  app.get('/asuntos/status/:nombre', findByStatus);
+  app.get('/asuntos/test', findTest);
+
+
+  /* D E P E N D E N C I A S */
+  // _________________________________________
+  // FindAsuntosByDireccin
+  // Responder
+  // UpdateStatus
+
+  
+
+  /* * * * * * * * * * * * /
+  /* * * * * * * * * * * * /
+  /* * * * * * * * * * * * /
+  /* * * * * * * * * * * * /
+  /* * * * * * * * * * * * /
+  /* * * * * * * * * * * * /
+
+
+
+
+  /* Routes Reportes */
+
+  /* A D M I N I S T R A D O R */
+  // _________________________________________
+  // Find By Date Range
+  // Find By Ciudadano : populate + find
+  // Find By Origen
+  // Find By Peticion
+  // Find By Folio
+  // Find By Direccion
+
+  /* D E P E N D E N C I A S */
+  // _________________________________________
+
+
+
+
+
 
 }
