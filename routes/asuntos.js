@@ -257,18 +257,19 @@ module.exports=function(app){
   /*  A D M I N I S T R A D O R */
   // _________________________________________
   app.get('/asuntos', findAllAsuntos);
+  app.get('/asuntos/today/', findByToday);
   app.get('/asunto/:id', findById);
   app.post('/asunto', addAsunto);
   app.put('/asunto/:id', updateAsunto);
   app.delete('/asunto/:id', deleteAsunto);
-  app.get('/asuntos/today/', findByToday);
   app.get('/asuntos/status/:nombre', findByStatus);
   app.get('/asuntos/test', findTest);
 
 
   /* D E P E N D E N C I A S */
   // _________________________________________
-  // FindAsuntosByDireccin
+  // FindAsuntosByDireccionToday
+  // FindAllAsuntosByDireccion
   // Responder
   // UpdateStatus
 
@@ -280,8 +281,6 @@ module.exports=function(app){
   /* * * * * * * * * * * * /
   /* * * * * * * * * * * * /
   /* * * * * * * * * * * * /
-
-
 
 
   /* Routes Reportes */

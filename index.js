@@ -6,7 +6,6 @@ var methodOverride = require('method-override');
 // configuracion mongo
 var mongoConfig = require('./config/mongo')();
 
-
 // configuracion app
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ 'extended': 'true' }));
@@ -26,3 +25,4 @@ app.listen(8080, function(e) {
 
 routesAsuntos = require('./routes/asuntos')(app);
 routesPeticiones = require('./routes/peticiones')(app);
+routesUsuarios = require('./routes/usuarios')(app);
