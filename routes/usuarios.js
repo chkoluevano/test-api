@@ -6,7 +6,6 @@ module.exports = function(app) {
     var Usuario = require('../models/usuario.js');
     findAllUsuarios = function(req, res) {
         console.log('GET - /usuario');
-        console.log(userLib);
         return Usuario.find(function(err, usuario) {
             if (!err) {
                 res.send(usuario)

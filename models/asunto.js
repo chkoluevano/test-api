@@ -3,12 +3,14 @@ Schema = mongoose.Schema
 
 /* Model relationship */
 var Peticion = require('../models/peticion.js');
+//var Usuario = require('../models/usuario.js');
 
 
 var Asunto = new Schema({
-    _peticion: { type: Schema.Types.ObjectId, ref: 'Peticion' },
+    //_usuario : { type: Schema.Types.ObjectId, ref: 'Usuario' },
+    _peticion: { type: Schema.Types.ObjectId, ref: 'Usuario' },
     descripcion: String,
-    folio: String,
+    folio: { type: Number, default: 1 }, 
     direccion_reporte: {
         calle: String,
         colonia: String,

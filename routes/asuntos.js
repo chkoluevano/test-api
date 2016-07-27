@@ -15,7 +15,8 @@ var upload = multer({ storage : storage}).single('userPhoto');
 module.exports=function(app){
 	var Asunto = require('../models/asunto.js');
 	var Peticion = require('../models/peticion.js');
-
+	//var Usuario = require('../models/usuario.js');
+	
 	/* Metodo para la APP */
 	photosUpload = function(req, res){
     	upload(req,res,function(err) {
