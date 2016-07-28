@@ -9,6 +9,7 @@
   "dependencies": {
     "body-parser": "^1.13.3",
     "express": "latest",
+    "jsonwebtoken": "^7.1.6",
     "method-override": "^2.1.3",
     "mongoose": "latest",
     "multer": "^1.1.0"

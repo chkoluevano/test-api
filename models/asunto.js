@@ -41,7 +41,6 @@ var Asunto = new Schema({
         status_nombre: { type: String, default: "iniciado" },
         status_fecha_modif: { type: Date, default: Date.now },
     },
-    origen: { type: String },
     fecha: { type: Date, default: Date.now },
     fecha_modif: { type: Date, default: Date.now },
     activo: { type: Boolean, default: true }
