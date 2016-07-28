@@ -255,6 +255,12 @@ module.exports=function(app){
 
 
   /* Basicas */
+
+  /*  G E N E R A L */
+  // _________________________________________
+  // authenticate
+
+
   /*  A D M I N I S T R A D O R */
   // _________________________________________
   app.get('/asuntos', findAllAsuntos);
