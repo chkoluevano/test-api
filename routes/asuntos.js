@@ -74,10 +74,7 @@ module.exports=function(app){
 
  	addAsunto = function(req, res){
  		console.log('POST - /asunto');
-
- 		/*
- 		*/ 
- 		var asunto = new Asunto({
+			var asunto = new Asunto({
  			folio: req.body.folio,
  			descripcion: req.body.descripcion,
  			direccion_reporte: {
