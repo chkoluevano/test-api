@@ -97,8 +97,21 @@ module.exports=function(app){
 
     	asunto.save(function(err){
     		if(!err){
-    			console.log("Asunto created");
-    			return res.send({status:'OK', asunto:asunto})
+    			return Asunto.find(function(err, asuntos) {
+		 			Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
+		 				if (!err){
+        		    		console.log(asuntos);
+                			res.status(200).send(asuntos);
+            			}
+            			else{
+            				res.statusCode = 500;
+  							console.log('Internal error(%d): %s',res.statusCode,err.message);
+  							res.send({ error: 'Error asunto' });
+  						}
+  					}); 
+  				});
+
+
     		}
     		else{
     			res.statusCode = 500;
