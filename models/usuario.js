@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 Schema = mongoose.Schema
-
 /* Usuarios Internos del sistema */
 
 var Usuario = new Schema({
