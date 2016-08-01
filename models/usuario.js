@@ -13,6 +13,7 @@ var Usuario = new Schema({
   fecha:  { type: Date, default: Date.now },
   activo: { type: Boolean, default: true },
   permisos: [{ nombre: String }],
+  foto : String,
   departamento:{
   	/* Referencia al documento */
   	area : Number
