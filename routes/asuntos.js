@@ -36,7 +36,7 @@ module.exports=function(app){
 		 return Asunto.find(function(err, asuntos) {
 		 	Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
         		    if (!err){
-        		    	console.log(asuntos);
+        		    	//console.log(asuntos);
                 		res.status(200).send(asuntos);
             		}
             		else{
@@ -97,28 +97,14 @@ module.exports=function(app){
 
     	asunto.save(function(err){
     		if(!err){
-    			return Asunto.find(function(err, asuntos) {
-		 			Peticion.populate(asuntos, {path: "_peticion"},function(err, asuntos){
-		 				if (!err){
-        		    		console.log(asuntos);
-                			res.status(200).send(asuntos);
-            			}
-            			else{
-            				res.statusCode = 500;
-  							console.log('Internal error(%d): %s',res.statusCode,err.message);
-  							res.send({ error: 'Error asunto' });
-  						}
-  					}); 
-  				});
-
-
+    			res.status(200).send({status:'ok'});
     		}
-    		else{
-    			res.statusCode = 500;
-  				console.log('Internal error(%d): %s',res.statusCode,err.message);
-  				console.log(err.message)
-  				return res.send({ error: 'Error asunto' });
-    		}
+            else{
+				res.statusCode = 500;
+				console.log('Internal error(%d): %s',res.statusCode,err.message);
+				res.send({ error: 'Error asunto' });
+  			}
+  				
     	});
 
 	};
@@ -126,6 +112,7 @@ module.exports=function(app){
 
  	updateAsunto= function(req, res){
  		console.log("PUT - /asunto/:id");
+ 		console.log(req.body.direccion_reporte.colonia);
  		return Asunto.findById(req.params.id,function(err,asunto){
  			if (!asunto){
  				res.statusCode = 404;
@@ -133,11 +120,11 @@ module.exports=function(app){
  			}
  			asunto.origen = req.body.origen;
  			asunto.descripcion = req.body.descripcion;
-			asunto.direccion_reporte.cp = req.body.cp;
-			asunto.direccion_reporte.calle = req.body.calle;
-			asunto.direccion_reporte.colonia = req.body.colonia;
-			asunto.direccion_reporte.numero = req.body.numero;
-			asunto.status.status_nombre = req.body.status_nombre;
+			asunto.direccion_reporte.cp = req.body.direccion_reporte.cp;
+			asunto.direccion_reporte.calle = req.body.direccion_reporte.calle;
+			asunto.direccion_reporte.colonia = req.body.direccion_reporte.colonia;
+			asunto.direccion_reporte.numero = req.body.direccion_reporte.numero;
+			asunto.status.status_nombre = req.body.status.status_nombre;
 			asunto._peticion= req.body.peticion;
 			if (!err) {
 	 			return asunto.save(function(err){
@@ -276,7 +263,7 @@ module.exports=function(app){
   app.get('/asuntos', findAllAsuntos);
   app.get('/asuntos/today/', findByToday);
   app.get('/asunto/:id', findById);
-  app.post('/asunto', addAsunto);
+  app.post('/asuntos', addAsunto);
   app.put('/asunto/:id', updateAsunto);
   app.delete('/asunto/:id', deleteAsunto);
   app.get('/asuntos/status/:nombre', findByStatus);
